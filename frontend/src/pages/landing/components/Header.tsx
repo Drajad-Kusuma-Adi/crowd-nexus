@@ -12,8 +12,8 @@ function Header() {
                     <a className="ps-5 pe-5 font-ubuntu-condensed" href="#faq">FAQ</a>
                 </div>
                 <div className="flex justify-center items-center">
-                    <a className="ps-5 pe-5 font-ubuntu-condensed" href="">Register</a>
-                    <a className="ps-5 pe-5 text-white bg-blue-600 hover:bg-blue-700 hover:text-white transition duration-300 font-medium rounded-lg text-sm px-5 py-2.5 ml-2 font-ubuntu-condensed text-center" href="">Sign In</a>
+                    <a className="ps-5 pe-5 font-ubuntu-condensed" href="./register">Register</a>
+                    <a className="ps-5 pe-5 text-white bg-blue-600 hover:bg-blue-700 hover:text-white transition duration-300 font-medium rounded-lg text-sm px-5 py-2.5 ml-2 font-ubuntu-condensed text-center" href="./sign-in">Sign In</a>
                 </div>
             </div>
             <div className="lg:hidden p-5">
@@ -23,7 +23,7 @@ function Header() {
                     <p className="text-2xl font-ubuntu-condensed ml-4">Crowd Nexus</p>
                     </div>
                     <div className="flex items-center flex-col">
-                    <a className="ps-5 pe-5 py-2 text-white bg-blue-600 hover:bg-blue-700 hover:text-white transition duration-300 font-medium rounded-lg font-ubuntu-condensed text-center" href="">Sign In</a>
+                    <a className="ps-5 pe-5 py-2 text-white bg-blue-600 hover:bg-blue-700 hover:text-white transition duration-300 font-medium rounded-lg font-ubuntu-condensed text-center" href="./sign-in">Sign In</a>
                     {/* <a className="ps-5 pe-5 font-ubuntu-condensed" href="">Register</a> */}
                     </div>
                 </div>
