@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
+import { checkAuthentication } from "../../guard/Guard";
 
 function Map() {
     const [auth, setAuth] = useState(false);
     useEffect(() => {
-        if (localStorage.getItem('token')) {
+        if (checkAuthentication() !== 'guest') {
             setAuth(true);
         }
     }, []);

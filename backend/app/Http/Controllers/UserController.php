@@ -70,10 +70,18 @@ class UserController extends Controller
             ], 404);
         }
 
+        // Check if user is active
+        if ($user->token != null) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User already signed in',
+            ], 401);
+        }
+
         // Check password
         if (Hash::check($request->password, $user->password)) {
             // Create token
-            $token = md5($request->email . $request->password);
+            $token = bin2hex(random_bytes(32));
             $createToken = Users::where('email', $request->email)->update([
                 'token' => $token
             ]);
@@ -113,13 +121,14 @@ class UserController extends Controller
                 return response()->json([
                     'success' => false,
                     'message' => 'Token invalid',
-                ], 401);
+                    'user' => null
+                ], 200);
             }
         } else {
             return response()->json([
                 'success' => false,
                 'message' => 'No token',
-            ], 401);
+            ], 400);
         }
     }
 

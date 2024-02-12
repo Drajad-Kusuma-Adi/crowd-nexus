@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { checkAuthentication } from "../../guard/Guard";
 import { api } from "../../guard/Api";
 
 function SignIn() {
+    const [banned, setBanned] = useState(false);
     useEffect(() => {
         checkAuthentication();
     }, []);
@@ -20,7 +21,17 @@ function SignIn() {
         })
         .then((response) => {
             localStorage.setItem('token', response.data.token);
-            window.location.pathname = '/map';
+            localStorage.setItem('email', response.data.user.email);
+            localStorage.setItem('name', response.data.user.name);
+            if (response.data.user.banned !== 0) {
+                setBanned(true);
+            } else {
+                if (response.data.user.is_admin === 1) {
+                    window.location.pathname = '/adminDashboard';
+                } else {
+                    window.location.pathname = '/map';
+                }
+            }
         })
         .catch((error) => {
             console.log(error);
@@ -46,9 +57,11 @@ function SignIn() {
                         </div>
                     </div>
                     <div className="text-center my-5">
-                        <input type="submit" value="Sign In" className="text-white bg-blue-600 hover:bg-blue-700 hover:text-white transition duration-300 font-medium rounded-lg text-sm px-5 py-2.5 ml-2 font-ubuntu-condensed text-center w-full" />
+                        <input type="submit" value="Sign In" className="text-white bg-blue-600 hover:bg-blue-700 hover:text-white transition duration-300 font-medium rounded-lg text-sm px-5 py-2.5 font-ubuntu-condensed text-center w-full hover:cursor-pointer" />
                         <br /><br />
                         <div className="font-ubuntu-condensed">Don't have an account? <a className="ms-4" href="../register">Register</a></div>
+                        <br /><br />
+                        <div className="font-ubuntu-condensed text-white bg-red-600 py-4 rounded-lg" hidden={!banned}>⚠️ That email address was banned from our service</div>
                     </div>
                 </form>
             </div>

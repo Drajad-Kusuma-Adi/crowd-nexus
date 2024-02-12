@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Public APIs
 // Authentication APIs
-Route::get('/signin', [UserController::class, 'signIn']);
+Route::post('/signin', [UserController::class, 'signIn']);
 Route::post('/register', [UserController::class, 'register']);
 Route::get('/checkToken', [UserController::class, 'checkToken']);
 
