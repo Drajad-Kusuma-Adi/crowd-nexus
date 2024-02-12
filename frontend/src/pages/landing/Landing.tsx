@@ -3,8 +3,13 @@ import Hero from "./components/Hero";
 import About from "./components/About";
 import Faq from "./components/Faq";
 import Footer from "./components/Footer";
+import { checkAuthentication } from "../../guard/Guard";
+import { useEffect } from "react";
 
 function Landing() {
+    useEffect(() => {
+        checkAuthentication();
+    }, []);
     return (
         <div className="container w-[100vw]">
             <Header/>

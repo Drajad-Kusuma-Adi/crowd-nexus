@@ -1,21 +1,48 @@
+import { useEffect } from "react";
+import { checkAuthentication } from "../../guard/Guard";
+import { api } from "../../guard/Api";
+
 function SignIn() {
+    useEffect(() => {
+        checkAuthentication();
+    }, []);
+    function signIn(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+
+        const formData = new FormData(event.currentTarget);
+
+        const email = formData.get('email');
+        const password = formData.get('password');
+
+        api.post('/signin', {
+            email: email,
+            password: password
+        })
+        .then((response) => {
+            localStorage.setItem('token', response.data.token);
+            window.location.pathname = '/map';
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    }
     return (
         <div className="container w-[100vw] lg:h-[100vh] flex flex-column lg:flex-row justify-evenly items-center flex-wrap p-5">
             <div>
                 <p className="text-4xl font-ubuntu text-center mb-10">Sign in to Your <span className="text-blue-600">Account</span></p>
-                <form>
+                <form onSubmit={signIn}>
                     <div className="text-center my-5">
                         <div className="font-ubuntu-condensed text-2xl opacity-50 mb-2">Email Address</div>
                         <div className="flex justify-center">
-                            <div className="border"><img src="mail.svg" alt="email" className="object-none m-4" /></div>
-                            <div className="border"><input className="font-ubuntu-condensed w-[250px] bg-white p-3 size-full focus:outline-none" type="email" name="email" id="email" required placeholder="youremail@example.com" /></div>
+                            <div className="border flex justify-center p-4"><img src="mail.svg" alt="email" className="w-[100%]" /></div>
+                            <div className="border w-[100%]"><input className="font-ubuntu-condensed bg-white p-3 size-full focus:outline-none" type="email" name="email" id="email" required placeholder="youremail@example.com" /></div>
                         </div>
                     </div>
                     <div className="text-center my-5">
                         <div className="font-ubuntu-condensed text-2xl opacity-50 mb-2">Password</div>
                         <div className="flex justify-center">
-                            <div className="border"><img src="lock.svg" alt="password" className="object-none m-4" /></div>
-                            <div className="border"><input className="font-ubuntu-condensed w-[250px] bg-white p-3 size-full focus:outline-none" type="password" name="password" id="password" required placeholder="*******" /></div>
+                            <div className="border flex justify-center p-4"><img src="lock.svg" alt="password" className="w-[100%]" /></div>
+                            <div className="border w-[100%]"><input className="font-ubuntu-condensed bg-white p-3 size-full focus:outline-none" type="password" name="password" id="password" required placeholder="*******" /></div>
                         </div>
                     </div>
                     <div className="text-center my-5">

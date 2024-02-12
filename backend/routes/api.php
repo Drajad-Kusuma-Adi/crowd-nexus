@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Authentication API
+Route::get('/signin', [UserController::class, 'signIn']);
+Route::post('/register', [UserController::class, 'register']);
+Route::get('/checkToken', [UserController::class, 'checkToken']);
