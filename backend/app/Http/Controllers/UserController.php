@@ -122,4 +122,22 @@ class UserController extends Controller
             ], 401);
         }
     }
+
+    public function signOut(Request $request)
+    {
+        $user = Users::where('token', $request->bearerToken())->update([
+            'token' => null
+        ]);
+        if ($user) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Sign out successful'
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong on sign out'
+            ], 500);
+        }
+    }
 }

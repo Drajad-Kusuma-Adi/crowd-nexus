@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\CheckToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +20,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Authentication API
+// Public APIs
+// Authentication APIs
 Route::get('/signin', [UserController::class, 'signIn']);
 Route::post('/register', [UserController::class, 'register']);
 Route::get('/checkToken', [UserController::class, 'checkToken']);
+
+// Private APIs
+Route::middleware(CheckToken::class)->group(function () {
+    // Sign Out API
+    Route::get('/signout', [UserController::class, 'signOut']);
+});
