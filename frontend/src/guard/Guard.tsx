@@ -8,7 +8,7 @@ function isPathname(pathnames: string[]): boolean {
 
 export function checkAuthentication() {
     const token = localStorage.getItem('token');
-    const guestPages = ['/', '/signin', '/register'];
+    const guestPages = ['/', '/sign-in', '/register'];
     const privatePages = ['/profile'];
     const adminPages = ['/adminDashboard'];
 
