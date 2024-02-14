@@ -22,7 +22,6 @@ function Maptiler() {
         }
       })
       .catch((error) => {
-        alert('Something went wrong, please reload the page');
         console.log(error);
       })
     }
@@ -82,11 +81,11 @@ function Maptiler() {
           />
       </MapContainer>
 
-        <div className="fixed top-0 bg-white z-50 p-1 rounded-lg m-4">
+        <div className="fixed top-0 bg-white z-50 rounded-lg m-4">
           {
             image ? (
               <div className='flex'>
-                <img src={image} alt="profile.png" className="rounded-lg" width="75px" />
+                <img src={image} alt="profile.png" className="rounded-lg m-2" width="75px" />
                 <svg
                   className='w-8 -rotate-90 hover:cursor-pointer'
                   xmlns="http://www.w3.org/2000/svg"
@@ -100,7 +99,7 @@ function Maptiler() {
                 >
                   <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
-                { !profileCollapsed ? <div className="flex flex-col bg-white rounded-full p-1">
+                { !profileCollapsed ? <div className="flex justify-center flex-col bg-white rounded-full p-1">
                   <button className='text-black rounded-lg bg-white p-1'><a href="/profile" className='text-black rounded-lg bg-white p-1 '>Check profile</a></button>
                   <button onClick={signOut} className='text-black rounded-lg bg-white p-1 hover:text-blue-600'>Sign out</button>
                 </div> : null }

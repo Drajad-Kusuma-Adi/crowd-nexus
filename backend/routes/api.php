@@ -28,6 +28,7 @@ Route::get('/checkToken', [UserController::class, 'checkToken']);
 
 // Private APIs
 Route::middleware(CheckToken::class)->group(function () {
-    // Sign Out API
     Route::get('/signout', [UserController::class, 'signOut']);
+
+    Route::get('/userinfo', [UserController::class, 'getUserInfo']);
 });
