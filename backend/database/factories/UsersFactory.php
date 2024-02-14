@@ -20,6 +20,7 @@ class UsersFactory extends Factory
             'email' => fake()->safeEmail(),
             'name' => fake()->name(),
             'password' => bcrypt('password'),
+            'image' => null,
             'is_admin' => false,
             'banned' => false,
             'token' => null

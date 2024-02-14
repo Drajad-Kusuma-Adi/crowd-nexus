@@ -34,6 +34,7 @@ function SignIn() {
             }
         })
         .catch((error) => {
+            alert('Something went wrong, please try again');
             console.log(error);
         })
     }

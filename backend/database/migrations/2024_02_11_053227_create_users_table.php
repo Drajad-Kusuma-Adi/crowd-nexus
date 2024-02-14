@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('name');
             $table->string('password');
+            $table->text('image')->nullable();
             $table->boolean('is_admin')->default(false);
             $table->boolean('banned')->default(false);
             $table->string('token')->nullable();
