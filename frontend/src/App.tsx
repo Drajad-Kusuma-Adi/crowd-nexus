@@ -1,10 +1,16 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { checkAuthentication } from "./guard/Guard";
+
 import Landing from "./pages/landing/Landing";
 import SignIn from "./pages/sign-in/SignIn";
 import Register from "./pages/register/Register";
 import Map from "./pages/map/Map";
+import { useEffect } from "react";
 
 function App() {
+  useEffect(() => {
+    checkAuthentication();
+  }, []);
   return (
     <main>
       <Router>

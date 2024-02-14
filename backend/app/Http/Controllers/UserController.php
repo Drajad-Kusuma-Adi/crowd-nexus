@@ -22,7 +22,7 @@ class UserController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'User already exist'
-            ], 400);
+            ], 200);
         }
 
         // Create new user
@@ -75,7 +75,8 @@ class UserController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'User already signed in',
-            ], 401);
+                'token' => $user->token
+            ], 200);
         }
 
         // Check password

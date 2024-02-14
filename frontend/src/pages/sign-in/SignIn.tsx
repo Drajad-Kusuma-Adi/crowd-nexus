@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
-import { checkAuthentication } from "../../guard/Guard";
+import { useState } from "react";
 import { api } from "../../guard/Api";
 
 function SignIn() {
     const [banned, setBanned] = useState(false);
-    useEffect(() => {
-        checkAuthentication();
-    }, []);
+    const [userExist, setUserExist] = useState(null);
+
     function signIn(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
@@ -20,16 +18,36 @@ function SignIn() {
             password: password
         })
         .then((response) => {
-            localStorage.setItem('token', response.data.token);
-            if (response.data.user.banned !== 0) {
-                setBanned(true);
+            if (response.data.message === "User already signed in") {
+                setUserExist(response.data.token);
             } else {
-                if (response.data.user.is_admin === 1) {
-                    window.location.pathname = '/adminDashboard';
+                localStorage.setItem('token', response.data.token);
+                if (response.data.user.banned !== 0) {
+                    setBanned(true);
                 } else {
-                    window.location.pathname = '/map';
+                    if (response.data.user.is_admin === 1) {
+                        window.location.pathname = '/adminDashboard';
+                    } else {
+                        window.location.pathname = '/map';
+                    }
                 }
             }
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    }
+
+    function signOut(event: React.MouseEvent<HTMLSpanElement>) {
+        event.preventDefault();
+
+        api.get('signout', {
+            headers: {
+                Authorization: `Bearer ${userExist}`
+            }
+        })
+        .then(() => {
+            setUserExist(null);
         })
         .catch((error) => {
             console.log(error);
@@ -60,6 +78,7 @@ function SignIn() {
                         <div className="font-ubuntu-condensed">Don't have an account? <a className="ms-4" href="../register">Register</a></div>
                         <br /><br />
                         <div className="font-ubuntu-condensed text-white bg-red-600 py-4 rounded-lg" hidden={!banned}>⚠️ That email address was banned from our service</div>
+                        <div className="font-ubuntu-condensed text-white bg-red-600 py-4 px-4 rounded-lg" hidden={!userExist}>⚠️ This user already signed in, <span className="underline hover:cursor-pointer" onClick={signOut}>sign out?</span></div>
                     </div>
                 </form>
             </div>

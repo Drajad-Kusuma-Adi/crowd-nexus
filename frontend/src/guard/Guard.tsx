@@ -1,5 +1,6 @@
 import { api } from "./Api";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 let role = 'guest'
 
 function isPathname(pathnames: string[]): boolean {
@@ -12,7 +13,7 @@ export function checkAuthentication() {
     const privatePages = ['/profile'];
     const adminPages = ['/adminDashboard'];
 
-    if (token) {
+    if (token !== null) {
         api.get('/checkToken', {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -40,9 +41,8 @@ export function checkAuthentication() {
             }
         })
         .catch(() => {
-            // ? Non-optimal?
             // console.log(error);
-            // localStorage.removeItem('token');
+            localStorage.removeItem('token');
             location.reload();
         })
     }
