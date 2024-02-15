@@ -35,11 +35,11 @@ function Maptiler() {
   });
 
   if (!isGeolocationAvailable) {
-    alert('Your browser does not support Geolocation');
+    console.log('Your browser does not support Geolocation');
   }
 
   if (!isGeolocationEnabled) {
-    alert('Geolocation is not enabled');
+    console.log('Geolocation is not enabled');
   }
 
   const [collapsed, setCollapsed] = useState(true);

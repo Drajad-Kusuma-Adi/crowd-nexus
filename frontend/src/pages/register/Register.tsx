@@ -60,7 +60,7 @@ function Register() {
                         </div>
                     </div>
                     <div className="text-center my-5">
-                        <input type="submit" value="Register" className="text-white bg-blue-600 hover:bg-blue-700 hover:text-white transition duration-300 font-medium rounded-lg text-sm px-5 py-2.5 font-ubuntu-condensed text-center w-full hover:cursor-pointer" />
+                        <input type="submit" value="Register" className="text-white bg-blue-600 hover:bg-blue-800 hover:text-white transition duration-300 font-medium rounded-lg text-sm px-5 py-2.5 font-ubuntu-condensed text-center w-full hover:cursor-pointer" />
                         <br /><br />
                         <div className="font-ubuntu-condensed">Already have an account? <a className="ms-4" href="../sign-in">Sign In</a></div>
                         <br /><br />
