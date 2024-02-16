@@ -6,17 +6,19 @@ import Footer from "./components/Footer";
 
 function Landing() {
     return (
-        <div className="w-[100vw]">
-            <Header/>
-            <div className="px-[10%] lg:px-[30%] text-center my-10">
-                <Hero/>
-                <br /><hr /><br />
-                <About/>
-                <br /><hr /><br />
-                <Faq/>
+        <>
+            <div className="w-[100vw]">
+                <Header/>
+                <div className="px-[10%] lg:px-[30%] text-center my-10">
+                    <Hero/>
+                    <br /><hr /><br />
+                    <About/>
+                    <br /><hr /><br />
+                    <Faq/>
+                </div>
+                <Footer/>
             </div>
-            <Footer/>
-        </div>
+        </>
     )
 }
 

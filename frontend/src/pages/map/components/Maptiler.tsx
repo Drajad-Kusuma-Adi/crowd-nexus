@@ -85,7 +85,7 @@ function Maptiler() {
           {
             image ? (
               <div className='flex'>
-                <img src={image} alt="profile.png" className="rounded-lg m-2" width="75px" />
+                <img src={image ? `http://localhost:8000/storage/photos/${image}` : 'userPlaceholder.svg'} alt="profile.png" className="rounded-lg m-2 w-[75px] h-[75px]" width="75px" />
                 <svg
                   className='w-8 -rotate-90 hover:cursor-pointer'
                   xmlns="http://www.w3.org/2000/svg"

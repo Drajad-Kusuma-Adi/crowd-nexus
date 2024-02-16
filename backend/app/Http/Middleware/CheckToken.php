@@ -22,6 +22,7 @@ class CheckToken
             return response()->json([
                 'success' => false,
                 'message' => 'Token invalid',
+                'invalid_token' => $request->bearerToken()
             ], 401);
         } else {
             return $next($request);

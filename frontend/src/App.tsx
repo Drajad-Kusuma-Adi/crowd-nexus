@@ -7,6 +7,7 @@ import SignIn from "./pages/sign-in/SignIn";
 import Register from "./pages/register/Register";
 import Map from "./pages/map/Map";
 import Profile from "./pages/profile/Profile";
+import EventCreator from "./pages/event-creator/EventCreator";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -14,18 +15,19 @@ function App() {
     checkAuthentication();
   }, []);
   return (
-    <main>
       <Router>
-        <Routes>
-          <Route path="/" Component={Landing}></Route>
-          <Route path="/register" Component={Register}></Route>
-          <Route path="/sign-in" Component={SignIn}></Route>
-          <Route path="/map" Component={Map}></Route>
-          <Route path='/profile' Component={Profile}></Route>
-          <Route path="*" Component={NotFound}></Route>
-        </Routes>
+        <main>
+          <Routes>
+            <Route path="/" Component={Landing}></Route>
+            <Route path="/register" Component={Register}></Route>
+            <Route path="/sign-in" Component={SignIn}></Route>
+            <Route path="/map" Component={Map}></Route>
+            <Route path='/profile' Component={Profile}></Route>
+            <Route path='/event-creator' Component={EventCreator}></Route>
+            <Route path="*" Component={NotFound}></Route>
+          </Routes>
+        </main>
       </Router>
-    </main>
   )
 }
 

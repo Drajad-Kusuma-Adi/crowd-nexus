@@ -1,6 +1,6 @@
 function Header() {
     return (
-        <header style={{backgroundColor: "#F3F6FF"}}>
+        <header className="sticky top-0 z-50 w-[100vw]" style={{backgroundColor: "#F3F6FF"}}>
             <div className="hidden lg:grid p-5 grid-cols-3 gap-4">
                 <div className="flex justify-center items-center">
                     <img src="logo.svg" alt="crowd nexus logo" width={50} />

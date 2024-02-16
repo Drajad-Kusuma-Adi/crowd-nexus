@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -148,6 +149,48 @@ class UserController extends Controller
             ], 500);
         }
     }
+
+    public function uploadPhoto(Request $request)
+    {
+        $user = Users::where('token', $request->bearerToken())->first();
+        if ($user) {
+            $validated = $request->validate([
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
+            ]);
+            if ($validated) {
+                if ($user->image && Storage::exists('public/photos/' . $user->image)) {
+                    Storage::delete('public/photos/' . $user->image);
+                }
+                $photoPath = $request->file('image')->store('public/photos');
+                $user->image = basename($photoPath);
+                $user->save();
+                if ($user->image && Storage::exists('public/photos/' . $user->image)) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Photo uploaded successfully',
+                        'image' => $user->image
+                    ], 200);
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Photo upload failed',
+                        'image' => $user->image
+                    ], 500);
+                }
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid photo format or size'
+                ], 422);
+            }
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid token'
+            ], 401);
+        }
+    }
+
 
     public function signOut(Request $request)
     {

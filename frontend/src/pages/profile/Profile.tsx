@@ -23,11 +23,33 @@ function Profile() {
         })
     }, []);
 
-    function uploadPhoto() {
-        alert('in progress');
-        // const formData = new FormData();
-        // formData.append('image', event.target.files[0]);
-    }
+    function uploadPhoto(event: React.ChangeEvent<HTMLInputElement>) {
+        event.preventDefault();
+
+        const token = localStorage.getItem("token");
+        const formData = new FormData();
+
+        const selectedFile = event.target.files && event.target.files[0];
+        if (selectedFile) {
+            formData.append("image", selectedFile);
+        }
+
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+
+        api
+          .post("/photo", formData, config)
+          .then(() => {
+            location.reload();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+
 
     return (
         <div className="container w-[80vw] lg:w-[50vw]">
@@ -39,28 +61,47 @@ function Profile() {
             <br /><br />
             <div className="flex justify-center md:justify-between flex-wrap">
                 <div className="flex my-4">
-                    <img src={image ? image : 'userPlaceholder.svg'} alt="userProfile" className="w-32 rounded-lg me-8 hover:opacity-50 transition duration-300 hover:cursor-pointer" onClick={uploadPhoto} />
+                    <form encType="multipart/form-data">
+                        <label htmlFor="image" className="relative">
+                            <input
+                                type="file"
+                                name="image"
+                                id="image"
+                                accept="image/*"
+                                className="absolute w-0 h-0 opacity-0"
+                                onChange={uploadPhoto}
+                            />
+                            <img
+                                src={image ? `http://localhost:8000/storage/photos/${image}` : 'userPlaceholder.svg'}
+                                alt="userProfile"
+                                className="w-[125px] h-[125px] rounded-lg me-8 hover:opacity-50 transition duration-300 cursor-pointer"
+                            />
+                        </label>
+                    </form>
                     <div className="flex flex-col justify-center">
                         <p className="text-3xl font-bold font-ubuntu">{name}</p>
                         <p className="text-xl opacity-50 font-ubuntu-condensed">{email}</p>
                     </div>
                 </div>
                 <div className="flex items-center my-4">
-                    <button className="text-white bg-blue-600 hover:bg-blue-800 hover:text-white transition duration-300 font-ubuntu-condensed text-center hover:cursor-pointer h-fit">
+                    <a href="/event-creator" className="text-white rounded-lg bg-blue-600 hover:bg-blue-800 hover:text-white transition duration-300 font-ubuntu-condensed text-center hover:cursor-pointer px-4 py-2">
                         + New Event
-                    </button>
+                    </a>
                 </div>
             </div>
             <br /><br />
             <hr />
             <br />
             <div className="flex justify-center">
-                <p className="hover:cursor-pointer hover:opacity-100 text-xl mx-4 opacity-50 font-ubuntu-condensed">Events</p>
-                <p className="hover:cursor-pointer hover:opacity-100 text-xl mx-4 opacity-50 font-ubuntu-condensed">Tickets</p>
-                <p className="hover:cursor-pointer hover:opacity-100 text-xl mx-4 opacity-50 font-ubuntu-condensed">Wishlists</p>
+                <p className="hover:cursor-pointer hover:opacity-100 text-xl mx-4 opacity-50 font-ubuntu-condensed" title="Events you've hosted so far">Events</p>
+                <p className="hover:cursor-pointer hover:opacity-100 text-xl mx-4 opacity-50 font-ubuntu-condensed" title="Tickets for events you've bought">Tickets</p>
+                <p className="hover:cursor-pointer hover:opacity-100 text-xl mx-4 opacity-50 font-ubuntu-condensed" title="Events you might want to go to">Wishlists</p>
             </div>
             <br />
             <hr />
+            <div className="flex justify-center my-10">
+                <img src="profileFooter.svg" alt="profileFooter.svg" />
+            </div>
         </div>
     )
 }

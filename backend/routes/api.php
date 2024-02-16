@@ -27,8 +27,9 @@ Route::post('/register', [UserController::class, 'register']);
 Route::get('/checkToken', [UserController::class, 'checkToken']);
 
 // Private APIs
+Route::post('/photo', [UserController::class, 'uploadPhoto']);
 Route::middleware(CheckToken::class)->group(function () {
+    // User API
     Route::get('/signout', [UserController::class, 'signOut']);
-
     Route::get('/userinfo', [UserController::class, 'getUserInfo']);
 });
