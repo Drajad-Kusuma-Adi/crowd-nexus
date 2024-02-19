@@ -36,10 +36,12 @@ function Maptiler() {
 
   if (!isGeolocationAvailable) {
     console.log('Your browser does not support Geolocation');
+    return null;
   }
 
   if (!isGeolocationEnabled) {
     console.log('Geolocation is not enabled');
+    return null;
   }
 
   const [collapsed, setCollapsed] = useState(true);
@@ -53,8 +55,6 @@ function Maptiler() {
   function toggleProfile() {
     setProfileCollapsed(!profileCollapsed);
   }
-
-  // const defaultCoords: [number, number] = [51.5074, -0.1278];
 
   function signOut() {
     api.get('/signout', {
@@ -75,33 +75,36 @@ function Maptiler() {
     return (
       <>
         <MapContainer center={coords ? [coords.latitude, coords.longitude] : [51.5074, -0.1278]} zoom={20} style={{ height: '100vh', width: '100wh', zIndex: 0, overflow: 'hidden' }} scrollWheelZoom={true} zoomControl={false}>
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-      </MapContainer>
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+        </MapContainer>
 
         <div className="fixed top-0 bg-white z-50 rounded-lg m-4">
           {
             image ? (
-              <div className='flex'>
-                <img src={image ? `http://localhost:8000/storage/photos/${image}` : 'userPlaceholder.svg'} alt="profile.png" className="rounded-lg m-2 w-[75px] h-[75px]" width="75px" />
-                <svg
-                  className='w-8 -rotate-90 hover:cursor-pointer'
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  onClick={toggleProfile}
-                >
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-                { !profileCollapsed ? <div className="flex justify-center flex-col bg-white rounded-full p-1">
-                  <button className='text-black rounded-lg bg-white p-1'><a href="/profile" className='text-black rounded-lg bg-white p-1 '>Check profile</a></button>
-                  <button onClick={signOut} className='text-black rounded-lg bg-white p-1 hover:text-blue-600'>Sign out</button>
+              <div className='flex flex-col'>
+                <div className="flex justify-center p-1">
+                  <img src={image ? `http://localhost:8000/storage/photos/${image}` : 'userPlaceholder.svg'} alt="profile.png" className="rounded-lg m-2 w-[75px] h-[75px]" width="75px" />
+                  <svg
+                    className='w-8 hover:cursor-pointer'
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    onClick={toggleProfile}
+                  >
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </div>
+                { !profileCollapsed ? <div className="flex flex-col bg-white rounded-full p-1">
+                  <button className='w-full text-start text-black rounded-lg bg-white p-1'><a href="/profile" className='text-black rounded-lg bg-white p-1'>Your Profile</a></button>
+                  <button className='w-full text-start text-black rounded-lg bg-white p-1'><a href="/event-creator" className='text-black rounded-lg bg-white p-1'>Event Creator</a></button>
+                  <button onClick={signOut} className='w-full text-start text-black rounded-lg bg-white p-1 hover:text-blue-600'><span className="text-black rounded-lg bg-white p-1">Sign out</span></button>
                 </div> : null }
               </div>
             ) : (

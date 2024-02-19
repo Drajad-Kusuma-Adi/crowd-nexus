@@ -13,6 +13,18 @@ class Events extends Model
 
     public $timestamps = false;
 
+    protected $fillable = [
+        'users_id',
+        'title',
+        'description',
+        'date',
+        'time',
+        'location',
+        'image',
+        'latitude',
+        'longitude'
+    ];
+
     public function user()
     {
         return $this->belongsTo(Users::class);

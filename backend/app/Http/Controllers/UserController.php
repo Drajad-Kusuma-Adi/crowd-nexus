@@ -153,17 +153,21 @@ class UserController extends Controller
     public function uploadPhoto(Request $request)
     {
         $user = Users::where('token', $request->bearerToken())->first();
+
         if ($user) {
             $validated = $request->validate([
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
+                'image' => 'required|image|mimes:jpeg,png,jpg,svg',
             ]);
+
             if ($validated) {
                 if ($user->image && Storage::exists('public/photos/' . $user->image)) {
                     Storage::delete('public/photos/' . $user->image);
                 }
+
                 $photoPath = $request->file('image')->store('public/photos');
                 $user->image = basename($photoPath);
                 $user->save();
+
                 if ($user->image && Storage::exists('public/photos/' . $user->image)) {
                     return response()->json([
                         'success' => true,

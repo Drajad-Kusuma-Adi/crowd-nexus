@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
 import { api } from "../../guard/Api";
+import EventCard from "./components/EventCard";
 
 function Profile() {
+    // const [id, setId] = useState(null);
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const [image, setImage] = useState('');
+    const [userEvents, setUserEvents] = useState([]);
+    const [userTickets, setUserTickets] = useState([]);
+    const [userWishlist, setUserWishlists] = useState([]);
 
     useEffect(() => {
         api.get('/userinfo', {
@@ -13,12 +18,25 @@ function Profile() {
             }
         })
         .then((response) => {
+            // setId(response.data.user.id);
             setEmail(response.data.user.email);
             setName(response.data.user.name);
             setImage(response.data.user.image);
         })
         .catch((error) => {
             alert('Something went wrong, please refresh the page');
+            console.log(error);
+        })
+
+        api.get('/userEvents', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then((response) => {
+            setUserEvents(response.data.events);
+        })
+        .catch((error) => {
             console.log(error);
         })
     }, []);
@@ -50,6 +68,20 @@ function Profile() {
           });
       }
 
+      function signOut() {
+        api.get('/signout', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        })
+        .then(() => {
+          window.location.pathname = '/';
+        })
+        .catch((error) => {
+          alert('Something went wrong, please try again');
+          console.log(error);
+        })
+      }
 
     return (
         <div className="container w-[80vw] lg:w-[50vw]">
@@ -83,10 +115,13 @@ function Profile() {
                         <p className="text-xl opacity-50 font-ubuntu-condensed">{email}</p>
                     </div>
                 </div>
-                <div className="flex items-center my-4">
-                    <a href="/event-creator" className="text-white rounded-lg bg-blue-600 hover:bg-blue-800 hover:text-white transition duration-300 font-ubuntu-condensed text-center hover:cursor-pointer px-4 py-2">
+                <div className="flex flex-col items-center my-4">
+                    <a href="/event-creator" className="w-full my-1 text-white rounded-lg bg-blue-600 hover:bg-blue-800 hover:text-white transition duration-300 font-ubuntu-condensed text-center hover:cursor-pointer px-4 py-2">
                         + New Event
                     </a>
+                    <span onClick={signOut} className="w-full my-1 text-white rounded-lg bg-blue-600 hover:bg-blue-800 hover:text-white transition duration-300 font-ubuntu-condensed text-center hover:cursor-pointer px-4 py-2">
+                        Sign Out
+                    </span>
                 </div>
             </div>
             <br /><br />
@@ -99,6 +134,15 @@ function Profile() {
             </div>
             <br />
             <hr />
+            <div className="flex flex-col justify-center items-center my-10">
+                {userEvents.length > 0 ? (
+                    userEvents.map((event) => (
+                        <EventCard id={event.id} title={event.title} description={event.description} image={event.image} />
+                    ))
+                ) : (
+                    <></>
+                )}
+            </div>
             <div className="flex justify-center my-10">
                 <img src="profileFooter.svg" alt="profileFooter.svg" />
             </div>

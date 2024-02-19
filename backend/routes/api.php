@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\UserController;
-use App\Http\Middleware\CheckToken;
 use Illuminate\Http\Request;
+use App\Http\Middleware\CheckToken;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\EventController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,4 +33,8 @@ Route::middleware(CheckToken::class)->group(function () {
     // User API
     Route::get('/signout', [UserController::class, 'signOut']);
     Route::get('/userinfo', [UserController::class, 'getUserInfo']);
+
+    // CRUD Events API
+    Route::post('/createEvent', [EventController::class, 'createEvent']);
+    Route::get('/userEvents', [EventController::class, 'getEventsByUsersId']);
 });
