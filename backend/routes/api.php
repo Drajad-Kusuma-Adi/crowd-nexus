@@ -32,9 +32,20 @@ Route::post('/photo', [UserController::class, 'uploadPhoto']);
 Route::middleware(CheckToken::class)->group(function () {
     // User API
     Route::get('/signout', [UserController::class, 'signOut']);
-    Route::get('/userinfo', [UserController::class, 'getUserInfo']);
 
-    // CRUD Events API
+    // Create Delete Events API
     Route::post('/createEvent', [EventController::class, 'createEvent']);
+    Route::post('/createTickets', [EventController::class, 'createTickets']);
+    Route::delete('/deleteEvent', [EventController::class, 'deleteEvent']);
+
+    // Read API
     Route::get('/userEvents', [EventController::class, 'getEventsByUsersId']);
+    Route::get('/allEvents', [EventController::class, 'getAllEvents']);
+    Route::get('/eventDetails', [EventController::class, 'getEventDetails']);
+    Route::get('/getEventCreator', [EventController::class, 'getEventCreator']);
+
+    // Wishlist API
+    Route::post('/wishlistEvent', [EventController::class, 'wishlistEvent']);
+    Route::get('/getUserWishlists', [EventController::class, 'getUserWishlists']);
+    Route::delete('/unwishlistEvent', [EventController::class, 'unwishlistEvent']);
 });

@@ -33,7 +33,7 @@ function EventCreator() {
         const map = useMapEvents({
           click(e) {
             setPosition(e.latlng);
-            map.flyTo(e.latlng, map.getZoom());
+            // map.flyTo(e.latlng, map.getZoom());
             setLocation(position);
           },
         })
@@ -64,6 +64,7 @@ function EventCreator() {
                 }]);
             } else {
                 alert('Cannot create more than 5 tickets per event');
+                // TODO: Alert? What is this, 2012?
             }
         }
 
@@ -87,9 +88,24 @@ function EventCreator() {
         .then((response) => {
             formData.append('users_id', response.data.user.id);
             api.post('/createEvent', formData, config)
-            .then(() => {
-                window.location.pathname = '/profile'
-                // TODO: Send tickets array to createTickets API
+            .then((response) => {
+                const event_id = response.data.event.id;
+                if (event_id)  {
+                    tickets.forEach((value) => {
+                        api.post('/createTickets', {
+                            event_id: event_id,
+                            name: value.name,
+                            benefits: value.benefits,
+                            price: value.price
+                        }, config)
+                        .then(() => {
+                            window.location.pathname = '/profile';
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        })
+                    });
+                }
             })
             .catch((error) => {
                 console.log(error);
@@ -126,7 +142,7 @@ function EventCreator() {
                         <div className="flex flex-col items-center border border-2 rounded-lg p-2 w-[80vw] my-4 lg:w-[20vw] h-[50vh] overflow-y-scroll">
                             <p className="text-center font-bold text-2xl font-ubuntu my-4">Ticket List</p>
                             {tickets.length > 0 ? tickets.map((ticket, index) => (
-                                <div className="my-2 flex flex-col items-center rounded-lg border border-2 py-4 px-8">
+                                <div className="my-2 w-[300px] flex flex-col items-center rounded-lg border border-2 py-4 px-8">
                                     <p className='text-4xl font-bold'>{ticket.name}</p>
                                     <p className='opacity-50'>{ticket.price}</p>
                                     <div className="flex">

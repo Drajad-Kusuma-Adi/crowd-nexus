@@ -134,22 +134,6 @@ class UserController extends Controller
         }
     }
 
-    public function getUserInfo(Request $request) {
-        $user = Users::where('token', $request->bearerToken())->first();
-        if ($user) {
-            return response()->json([
-                'success' => 'true',
-                'message' => 'Get info success',
-                'user' => $user
-            ], 200);
-        } else {
-            return response()->json([
-                'success' => 'false',
-                'message' => 'Get info failed',
-            ], 500);
-        }
-    }
-
     public function uploadPhoto(Request $request)
     {
         $user = Users::where('token', $request->bearerToken())->first();

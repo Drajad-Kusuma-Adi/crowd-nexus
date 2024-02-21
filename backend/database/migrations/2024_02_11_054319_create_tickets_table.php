@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('events_id');
             $table->string('name');
             $table->text('benefits');
-            $table->integer('price');
+            $table->string('price');
             $table->foreign('events_id')->references('id')->on('events');
         });
     }

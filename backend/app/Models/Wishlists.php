@@ -12,4 +12,9 @@ class Wishlists extends Model
     protected $table = 'wishlists';
 
     public $timestamps = false;
+
+    protected $fillable = [
+        'users_id',
+        'events_id'
+    ];
 }

@@ -1,12 +1,15 @@
 import './Maptiler.css';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import EventPopup from './EventPopup';
 import { useGeolocated } from 'react-geolocated';
 import { useEffect, useState } from 'react';
 import { api } from '../../../guard/Api';
 
 function Maptiler() {
   const [image, setImage] = useState('');
+  const [events, setEvents] = useState([]);
+
   useEffect(() => {
     if (localStorage.getItem('token') !== null) {
       api.get('/checkToken', {
@@ -25,6 +28,18 @@ function Maptiler() {
         console.log(error);
       })
     }
+
+    api.get('/allEvents', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    .then((response) => {
+      setEvents(response.data.events);
+    })
+    .catch((error) => {
+      console.log(error);
+    })
   })
 
   const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeolocated({
@@ -79,6 +94,15 @@ function Maptiler() {
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
+            {events.map((event) => (
+              <Marker position={[event.latitude, event.longitude]}>
+                <Popup>
+                  <div className="flex justify-center">
+                    <EventPopup id={event.id} title={event.title} description={event.description} image={event.image} />
+                  </div>
+                </Popup>
+              </Marker>
+            ))}
         </MapContainer>
 
         <div className="fixed top-0 bg-white z-50 rounded-lg m-4">

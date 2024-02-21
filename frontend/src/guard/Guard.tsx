@@ -34,10 +34,8 @@ export function checkAuthentication() {
                 }
             }
         })
-        .catch(() => {
-            // console.log(error);
-            localStorage.removeItem('token');
-            location.reload();
+        .catch((error) => {
+            console.log(error);
         })
     }
 }

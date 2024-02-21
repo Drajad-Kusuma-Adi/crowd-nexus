@@ -12,7 +12,7 @@ function Profile() {
     const [userWishlist, setUserWishlists] = useState([]);
 
     useEffect(() => {
-        api.get('/userinfo', {
+        api.get('/checkToken', {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
