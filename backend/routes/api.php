@@ -37,15 +37,25 @@ Route::middleware(CheckToken::class)->group(function () {
     Route::post('/createEvent', [EventController::class, 'createEvent']);
     Route::post('/createTickets', [EventController::class, 'createTickets']);
     Route::delete('/deleteEvent', [EventController::class, 'deleteEvent']);
+    Route::post('/purchaseTicket', [EventController::class, 'purchaseTicket']);
 
     // Read API
     Route::get('/userEvents', [EventController::class, 'getEventsByUsersId']);
+    Route::get('/userTickets', [EventController::class, 'getTicketsByUsersId']);
     Route::get('/allEvents', [EventController::class, 'getAllEvents']);
+    Route::get('/searchEvent', [EventController::class, 'searchEvent']);
     Route::get('/eventDetails', [EventController::class, 'getEventDetails']);
     Route::get('/getEventCreator', [EventController::class, 'getEventCreator']);
+    Route::get('/getEventTickets', [EventController::class, 'getEventTickets']);
+    Route::get('/getTicketEvents', [EventController::class, 'getTicketEvents']);
+    Route::get('/ticketDetails', [EventController::class, 'getTicketDetails']);
 
     // Wishlist API
     Route::post('/wishlistEvent', [EventController::class, 'wishlistEvent']);
     Route::get('/getUserWishlists', [EventController::class, 'getUserWishlists']);
+    Route::get('/checkIsWishlist', [EventController::class, 'checkIsWishlist']);
     Route::delete('/unwishlistEvent', [EventController::class, 'unwishlistEvent']);
+
+    // Report Event API
+    Route::post('/reportEvent', [EventController::class, 'reportEvent']);
 });

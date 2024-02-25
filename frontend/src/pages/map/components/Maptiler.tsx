@@ -1,14 +1,17 @@
 import './Maptiler.css';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import EventPopup from './EventPopup';
 import { useGeolocated } from 'react-geolocated';
 import { useEffect, useState } from 'react';
 import { api } from '../../../guard/Api';
+import EventPopup from './EventPopup';
+import EventSearchCard from './EventSearchCard';
+import Loading from '../../../components/Loading';
 
 function Maptiler() {
   const [image, setImage] = useState('');
   const [events, setEvents] = useState([]);
+  const [searchEvents, setSearchEvents] = useState([]);
 
   useEffect(() => {
     if (localStorage.getItem('token') !== null) {
@@ -40,7 +43,7 @@ function Maptiler() {
     .catch((error) => {
       console.log(error);
     })
-  })
+  }, []);
 
   const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeolocated({
     positionOptions: {
@@ -86,6 +89,27 @@ function Maptiler() {
     })
   }
 
+  function searchEvent(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+
+    api.get('/searchEvent', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      },
+      params: {
+        keyword: formData.get('keyword')
+      }
+    })
+    .then((response) => {
+      setSearchEvents(response.data.events);
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+
   if (coords !== undefined) {
     return (
       <>
@@ -94,8 +118,8 @@ function Maptiler() {
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {events.map((event) => (
-              <Marker position={[event.latitude, event.longitude]}>
+            {events.map((event, index) => (
+              <Marker key={index} position={[event.latitude, event.longitude]}>
                 <Popup>
                   <div className="flex justify-center">
                     <EventPopup id={event.id} title={event.title} description={event.description} image={event.image} />
@@ -110,7 +134,7 @@ function Maptiler() {
             image ? (
               <div className='flex flex-col'>
                 <div className="flex justify-center p-1">
-                  <img src={image ? `http://localhost:8000/storage/photos/${image}` : 'userPlaceholder.svg'} alt="profile.png" className="rounded-lg m-2 w-[75px] h-[75px]" width="75px" />
+                  <img src={image ? `http://localhost:8000/storage/photos/${image}` : 'userPlaceholder.svg'} alt="profile picture" className="rounded-lg m-2 w-[75px] h-[75px]" width="75px" />
                   <svg
                     className='w-8 hover:cursor-pointer'
                     xmlns="http://www.w3.org/2000/svg"
@@ -141,67 +165,31 @@ function Maptiler() {
         <img src="menu.svg" alt="menu.svg" className="rounded-lg mx-auto w-10 h-10 hover:cursor-pointer m-4" onClick={toggleMenu} />
         {!collapsed && (
           <div className={`transform transition-transform duration-500 ease-in-out ${collapsed ? 'scale-y-0' : 'scale-y-100'} w-full p-4 bg-white h-[50vh]`}>
-            <form>
+            <form onSubmit={searchEvent}>
               <div className="search-bar mb-6 flex items-center border rounded-lg w-[80%] mx-auto">
                 <input
                   type="text"
                   placeholder="Search for event..."
                   className="px-4 py-2 w-full outline-none bg-gray-100"
+                  name='keyword'
                 />
                 <button type='submit' className="px-4 py-2 bg-blue-600 ml-[-10px] rounded-r-lg">
                   <img src="search.svg" alt="search.svg" />
                 </button>
               </div>
             </form>
-  
-            <div className="flex justify-center flex-wrap h-[80%]" style={{overflowY: 'scroll'}}>
-              <div className="card bg-white border rounded-lg w-[40vw] me-4">
-                <img src="/path/to/image" alt="" className="rounded-t-lg h-48 w-full object-cover" />
-                <div className="card-content p-4">
-                  <h3>Event 1</h3>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  </p>
-                </div>
-              </div>
-  
-              <div className="card bg-white border rounded-lg w-[40vw] me-4">
-                <img src="/path/to/image" alt="" className="rounded-t-lg h-48 w-full object-cover" />
-                <div className="card-content p-4">
-                  <h3>Event 2 With Longer...</h3>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos dolorem,
-                    vitae minima est officia tenetur aliquam laboriosam...
-                  </p>
-                </div>
-              </div>
-  
-              <div className="card bg-white border rounded-lg w-[40vw] me-4">
-                <img src="/path/to/image" alt="" className="rounded-t-lg h-48 w-full object-cover" />
-                <div className="card-content p-4">
-                  <h3>Event 1</h3>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  </p>
-                </div>
-              </div>
-  
-              <div className="card bg-white border rounded-lg w-[40vw] me-4">
-                <img src="/path/to/image" alt="" className="rounded-t-lg h-48 w-full object-cover" />
-                <div className="card-content p-4">
-                  <h3>Event 2 With Longer...</h3>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos dolorem,
-                    vitae minima est officia tenetur aliquam laboriosam...
-                  </p>
-                </div>
-              </div>
+            <div className="flex justify-center flex-wrap" style={{overflowY: 'scroll', height: '40vh'}}>
+              {searchEvents ? searchEvents.map((event, index) => (
+                  <EventSearchCard key={index} id={event.id} image={event.image} title={event.title} description={event.description} />
+              )) : null}
             </div>
           </div>
         )}
       </div>
       </>
     )
+  } else {
+    <Loading />
   }
 }
 

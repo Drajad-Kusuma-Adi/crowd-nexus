@@ -34,8 +34,8 @@ class Users extends Model
         return $this->hasManyThrough(
             Tickets::class,
             Events::class,
-            'user_id',
-            'event_id',
+            'users_id',
+            'events_id',
             'id',
             'id'
         );
@@ -43,11 +43,21 @@ class Users extends Model
 
     public function purchases()
     {
-        return $this->belongsToMany(Events::class, 'purchases');
+        return $this->belongsToMany(Tickets::class, 'purchases');
     }
 
     public function wishlists()
     {
         return $this->belongsToMany(Events::class, 'wishlists');
+    }
+
+    public function reports()
+    {
+        return $this->belongsToMany(Events::class, 'reports');
+    }
+
+    public function comments()
+    {
+        return $this->belongsToMany(Events::class, 'comments');
     }
 }

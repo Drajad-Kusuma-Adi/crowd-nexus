@@ -12,4 +12,10 @@ class Reports extends Model
     protected $table = 'reports';
 
     public $timestamps = false;
+
+    protected $fillable = [
+        'users_id',
+        'events_id',
+        'description'
+    ];
 }

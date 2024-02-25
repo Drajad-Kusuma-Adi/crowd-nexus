@@ -38,7 +38,7 @@ function EventCard({id, title, description, image}: {id: number, title: string, 
         <div className="flex justify-center items-center">
             <img className="w-[100px] h-[100px] rounded-lg" src={"http://localhost:8000/storage/photos/" + image} alt={title} />
             <div className="p-5">
-            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{title}</h5>
+            <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900">{title}</h5>
             <p className="mb-3 text-sm font-normal text-justify">
                 {expanded ? description : shortDescription}
                 {description.length > 100 && !expanded && (

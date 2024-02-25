@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { checkAuthentication } from "./guard/Guard";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import Landing from "./pages/landing/Landing";
 import SignIn from "./pages/sign-in/SignIn";
@@ -10,12 +10,19 @@ import Profile from "./pages/profile/Profile";
 import EventCreator from "./pages/event-creator/EventCreator";
 import EventDetails from "./pages/event-details/EventDetails";
 import NotFound from "./pages/NotFound";
+import Loading from "./components/Loading";
 
 function App() {
+  const [auth, setAuth] = useState(false);
   useEffect(() => {
-    checkAuthentication();
+      const authenticate = async () => {
+          await checkAuthentication();
+          setAuth(true);
+      };
+      authenticate();
   }, []);
-  return (
+  if (auth === true) {
+    return (
       <Router>
         <main>
           <Routes>
@@ -30,7 +37,12 @@ function App() {
           </Routes>
         </main>
       </Router>
-  )
+    )
+  } else {
+    return (
+      <Loading />
+    )
+  }
 }
 
 export default App
