@@ -5,7 +5,7 @@ import TicketCard from "./components/TicketCard";
 import WishlistCard from "./components/WishlistCard";
 
 function Profile() {
-    const [id, setId] = useState(1);
+    const [id, setId] = useState(null);
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const [image, setImage] = useState('');
@@ -35,7 +35,8 @@ function Profile() {
                 }
             })
             .then((response) => {
-                setUserEvents(response.data.events);
+                const upcomingEvents = response.data.events.filter(event => new Date(event.date) > new Date());
+                setUserEvents(upcomingEvents.slice(0, 10));
             })
             .catch((error) => {
                 console.log(error);
@@ -46,7 +47,7 @@ function Profile() {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 },
                 params: {
-                    user_id: id
+                    user_id: response.data.user.id
                 }
             })
             .then((response) => {
@@ -61,7 +62,7 @@ function Profile() {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 },
                 params: {
-                    user_id: id
+                    user_id: response.data.user.id
                 }
             })
             .then((response) => {
@@ -76,7 +77,7 @@ function Profile() {
             console.log(error);
         })
     }, []);
-
+    
     function showEvents() {
         setShow(1);
     }
@@ -191,28 +192,28 @@ function Profile() {
                     <hr />
                     <div className="flex flex-col justify-center items-center my-10">
                         {processing && <div>Processing...</div> }
-                        {show === 1 && <div className="justify-center font-ubuntu text-4xl font-bold">Events<br /><br /></div>}
+                        {show === 1 && <div className="justify-center font-ubuntu text-4xl font-bold">Latest Events You've Created<br /><br /></div>}
                         {show === 1 && userEvents.length > 0 ? (
                             userEvents.map((event, index) => (
                                 <EventCard key={index} id={event.id} title={event.title} description={event.description} image={event.image} />
                             ))
                         ) : null}
-                        {show === 2 && <div className="justify-center font-ubuntu text-4xl font-bold">Tickets<br /><br /></div>}
+                        {show === 2 && <div className="justify-center font-ubuntu text-4xl font-bold">Latest Tickets You've Purchased<br /><br /></div>}
                         {show === 2 && userTickets.length > 0 ? (
                             userTickets.map((ticket, index) => (
                                 <TicketCard key={index} ticket_id={ticket.tickets_id} />
                             ))
                         ) : null}
-                        {show === 3 && <div className="justify-center font-ubuntu text-4xl font-bold">Wishlists<br /><br /></div>}
+                        {show === 3 && <div className="justify-center font-ubuntu text-4xl font-bold">Your Wishlists<br /><br /></div>}
                         {show === 3 && userWishlists.length > 0 ? (
                             userWishlists.map((wishlist, index) => (
                                 <WishlistCard key={index} event_id={wishlist.events_id} />
                             ))
                         ): null}
                     </div>
-                    <div className="flex justify-center my-10">
+                    {/* <div className="flex justify-center my-10">
                         <img src="profileFooter.svg" alt="profileFooter.svg" />
-                </div>
+                    </div> */}
                 </div>
             )
     }

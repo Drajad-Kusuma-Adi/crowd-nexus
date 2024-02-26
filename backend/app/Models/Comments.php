@@ -16,6 +16,7 @@ class Comments extends Model
     protected $fillable = [
         'users_id',
         'events_id',
-        'comment'
+        'comment',
+        'date'
     ];
 }

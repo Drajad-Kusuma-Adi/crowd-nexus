@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('users_id');
             $table->unsignedBigInteger('events_id');
             $table->text('comment');
-            $table->date('date');
+            $table->string('date');
             $table->foreign('users_id')->references('id')->on('users');
             $table->foreign('events_id')->references('id')->on('events');
         });

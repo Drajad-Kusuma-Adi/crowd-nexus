@@ -347,4 +347,41 @@ class EventController extends Controller
             'tickets' => $tickets
         ], 200);
     }
+
+    public function sendComment(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|integer',
+            'event_id' => 'required|integer',
+            'comment' => 'required|string',
+            'date' => 'required'
+        ]);
+
+        Comments::create([
+            'users_id' => $request->user_id,
+            'events_id' => $request->event_id,
+            'comment' => $request->comment,
+            'date' => $request->date
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Comment sent'
+        ], 200);
+    }
+
+    public function getCommentsByEventId(Request $request)
+    {
+        $request->validate([
+            'event_id' => 'required|integer'
+        ]);
+
+        $comments = Comments::where('events_id', $request->event_id)->get();
+
+        return response()->json([
+            'success' => true,
+            'message' => "Get comments by event successful",
+            'comments' => $comments
+        ], 200);
+    }
 }

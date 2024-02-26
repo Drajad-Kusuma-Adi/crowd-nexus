@@ -118,15 +118,29 @@ function Maptiler() {
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {events.map((event, index) => (
-              <Marker key={index} position={[event.latitude, event.longitude]}>
-                <Popup>
-                  <div className="flex justify-center">
-                    <EventPopup id={event.id} title={event.title} description={event.description} image={event.image} />
-                  </div>
-                </Popup>
-              </Marker>
-            ))}
+            {events.map((event, index) => {
+              const eventDate = new Date(event.date);
+              const currentDate = new Date();
+
+              if (eventDate >= currentDate) {
+                return (
+                  <Marker key={index} position={[event.latitude, event.longitude]}>
+                    <Popup>
+                      <div className="flex justify-center">
+                        <EventPopup
+                          id={event.id}
+                          title={event.title}
+                          description={event.description}
+                          image={event.image}
+                        />
+                      </div>
+                    </Popup>
+                  </Marker>
+                );
+              } else {
+                return null;
+              }
+            })}
         </MapContainer>
 
         <div className="fixed top-0 bg-white z-50 rounded-lg m-4">
@@ -179,9 +193,24 @@ function Maptiler() {
               </div>
             </form>
             <div className="flex justify-center flex-wrap" style={{overflowY: 'scroll', height: '40vh'}}>
-              {searchEvents ? searchEvents.map((event, index) => (
-                  <EventSearchCard key={index} id={event.id} image={event.image} title={event.title} description={event.description} />
-              )) : null}
+            {searchEvents ? searchEvents.map((event, index) => {
+              const eventDate = new Date(event.date);
+              const currentDate = new Date();
+
+              if (eventDate >= currentDate) {
+                return (
+                  <EventSearchCard
+                    key={index}
+                    id={event.id}
+                    image={event.image}
+                    title={event.title}
+                    description={event.description}
+                  />
+                );
+              } else {
+                return null;
+              }
+            }) : null}
             </div>
           </div>
         )}
