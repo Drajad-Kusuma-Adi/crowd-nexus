@@ -140,7 +140,7 @@ function EventCreator() {
                             <br /><br />
                             <label htmlFor="ticketPrice">Ticket Price</label>
                             <br />
-                            <div className="flex items-center">Rp <input required type="number" className='ms-2 w-full bg-white p-2 border-2 rounded-lg' name="ticketPrice" id="ticketPrice" placeholder='Enter ticket price...' /></div>
+                            <div className="flex items-center">$ <input required type="number" className='ms-2 w-full bg-white p-2 border-2 rounded-lg' name="ticketPrice" id="ticketPrice" placeholder='Enter ticket price...' /></div>
                             <br /><br />
                             <input className="w-fit my-1 text-white rounded-lg bg-blue-600 hover:bg-blue-800 hover:text-white transition duration-300 font-ubuntu-condensed text-center hover:cursor-pointer px-4 py-2" type="submit" value="Add Ticket" />
                         </div>
