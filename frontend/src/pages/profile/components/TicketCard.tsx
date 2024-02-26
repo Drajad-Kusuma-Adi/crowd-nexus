@@ -53,7 +53,7 @@ function EventCard({ticket_id}: {ticket_id: number}) {
         return (
           new Date(event.date) > new Date() ? (
             <div className="m-4 p-4 w-[50%] bg-white shadow-md rounded-lg flex flex-col justify-between items-start d-flex">
-              <div className="flex justify-center items-center">
+              <div className="flex justify-center items-center flex-wrap">
                 <img className="w-[100px] h-[100px] rounded-lg" src={`http://localhost:8000/storage/photos/${event.image}`} alt={event.title} />
                 <div className="p-5">
                   <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900">{event.title.length > 20 ? `${event.title.slice(0, 20)}...` : event.title}</h5>

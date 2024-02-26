@@ -5,9 +5,9 @@ function CommentCard({comment}: {comment: {users_id: number, events_id: number, 
     const [user, setUser] = useState({});
 
     useEffect(() => {
-        api.get('/checkToken', {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
+        api.get('/getUserById', {
+            params: {
+                user_id: comment.users_id
             }
         })
         .then((response) => {

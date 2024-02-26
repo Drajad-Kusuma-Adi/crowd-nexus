@@ -63,18 +63,32 @@ function Comments() {
         })
     }
 
-    if (user !== null && user !== undefined) {
+    if (user !== undefined && user !== null) {
         return (
             <div className="p-4 mx-8 border border-black rounded-lg">
                 <p className="font-ubuntu-condensed text-xl opacity-50">Comments</p>
                 <br />
                 <div className="flex justify-start items-center">
-                    <img src={user.image !== null ? ('http://localhost:8000/storage/photos/' + user.image) : 'userPlaceholder.svg'} alt="user profile" className="w-[50px] rounded-full" />
-                    <form onSubmit={sendComment} className="w-full flex items-center">
-                        <input type="text" className="w-[90%] h-[75px] bg-white rounded-lg mx-4 p-4 border border-black" name="comment" id="comment" placeholder="Add your thoughts..."></input>
-                        <input className="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 hover:text-white rounded-lg hover:cursor-pointer" type="submit" value="Send" />
-                    </form>
-                </div>
+                        <img src={user.image !== null ? ('http://localhost:8000/storage/photos/' + user.image) : 'userPlaceholder.svg'} alt="user profile" className="w-[50px] rounded-full" />
+                        <form onSubmit={sendComment} className="w-full flex items-center">
+                            <input type="text" className="w-[90%] h-[75px] bg-white rounded-lg mx-4 p-4 border border-black" name="comment" id="comment" placeholder="Add your thoughts..."></input>
+                            <input className="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 hover:text-white rounded-lg hover:cursor-pointer" type="submit" value="Send" />
+                        </form>
+                    </div>
+                <br /><hr /><br />
+                {comments.map((comment, index) => {
+                    return (
+                        <CommentCard key={index} comment={comment} />
+                    )
+                })}
+            </div>
+        )
+    } else {
+        return (
+            <div className="p-4 mx-8 border border-black rounded-lg">
+                <p className="font-ubuntu-condensed text-xl opacity-50">Comments</p>
+                <br />
+                <div className="flex justify-start items-center font-ubuntu-condensed">You need to be logged in to comment</div>
                 <br /><hr /><br />
                 {comments.map((comment, index) => {
                     return (

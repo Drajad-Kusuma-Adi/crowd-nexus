@@ -115,6 +115,7 @@ function EventDetails() {
           })
           .catch((error) => {
             console.log(error);
+            alert('You need to be logged in before you can wishlist an event');
           })
     }
 

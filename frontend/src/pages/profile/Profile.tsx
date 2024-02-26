@@ -149,7 +149,7 @@ function Profile() {
                     <br /><br />
                     <div className="flex justify-center md:justify-between flex-wrap">
                         <div className="flex my-4">
-                            <form encType="multipart/form-data">
+                            <form encType="multipart/form-data" className="me-4">
                                 <label htmlFor="image" className="relative">
                                     <input
                                         type="file"

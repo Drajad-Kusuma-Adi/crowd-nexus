@@ -30,13 +30,14 @@ function TicketCard({id, name, benefits, price}: {id: number, name: string, bene
           })
           .catch((error) => {
             console.log(error);
+            alert('You must be logged in to purchase a ticket');
           })
     }
 
     return (
         <>
             <Dialog className="p-4" size="md" open={openBenefits} handler={handleOpenBenefits} placeholder={undefined}>
-                <p className="font-ubuntu-condensed text-justify"><span className="text-2xl font-bold">Benefits:</span> <br /> <span className="opacity-50">{benefits}</span></p>
+                <p className="font-ubuntu-condensed text-justify"><span className="text-2xl font-bold">Benefits:</span> <br /> <span className="">{benefits}</span></p>
             </Dialog>
             <div className="my-2 w-[100%] flex flex-col items-center rounded-lg border border-black shadow-md py-4 px-8">
                 <p className='text-4xl font-bold'>{name}</p>

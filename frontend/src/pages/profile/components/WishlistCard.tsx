@@ -24,7 +24,7 @@ function WishlistCard({event_id}: {event_id: number}) {
     if (event !== undefined && event !== null) {
         return (
             <div className="m-4 p-4 w-[75%] rounded-lg flex justify-between items-center bg-white shadow-md d-flex">
-              <div className="flex justify-center items-center">
+              <div className="flex justify-center items-center flex-wrap">
                   <img className="w-[100px] h-[100px] rounded-lg" src={"http://localhost:8000/storage/photos/" + event.image} alt={event.title} />
                   <div className="p-5">
                       <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900">{event.title.length > 20 ? `${event.title.slice(0, 20)}...` : event.title}</h5>

@@ -7,7 +7,7 @@ function isPathname(pathnames: string[]): boolean {
 export async function checkAuthentication() {
     const token = localStorage.getItem('token');
     const guestPages = ['/', '/sign-in', '/register'];
-    const privatePages = ['/profile', '/event-creator', '/event-details'];
+    const privatePages = ['/profile', '/event-creator'];
     const adminPages = ['/adminDashboard'];
 
     if (token !== null) {

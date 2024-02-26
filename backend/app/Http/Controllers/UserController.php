@@ -134,6 +134,25 @@ class UserController extends Controller
         }
     }
 
+    public function getUserById(Request $request)
+    {
+        $validatedData = $request->validate([
+            'user_id' => 'required|integer'
+        ]);
+        $user = Users::where('id', $validatedData['user_id'])->first();
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Get user successful',
+            'user' => $user
+        ], 200);
+    }
+
     public function uploadPhoto(Request $request)
     {
         $user = Users::where('token', $request->bearerToken())->first();
